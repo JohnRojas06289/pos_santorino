@@ -2,144 +2,462 @@
 
 @section('title', $producto->nombre . ' - Bajo Cero')
 
+@section('styles')
+<style>
+    .product-detail {
+        padding: 3rem 0;
+    }
+
+    .breadcrumb-custom {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 2rem;
+    }
+
+    .breadcrumb-custom .breadcrumb-item a {
+        color: var(--blue-medium);
+        text-decoration: none;
+    }
+
+    .breadcrumb-custom .breadcrumb-item.active {
+        color: var(--blue-dark);
+    }
+
+    .product-gallery {
+        position: relative;
+        background: var(--text-light);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 2px solid var(--blue-light);
+    }
+
+    .main-image {
+        width: 100%;
+        height: 600px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+        background: var(--cream);
+    }
+
+    .main-image:hover {
+        transform: scale(1.02);
+    }
+
+    .thumbnail-container {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 2px solid var(--blue-light);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: var(--cream);
+    }
+
+    .thumbnail:hover,
+    .thumbnail.active {
+        border-color: var(--blue-medium);
+        transform: scale(1.1);
+    }
+
+    .product-info {
+        padding-left: 2rem;
+        background: var(--text-light);
+        border-radius: 12px;
+        padding: 2rem;
+        border: 2px solid var(--blue-light);
+    }
+
+    .product-name {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .product-meta {
+        color: var(--blue-medium);
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--blue-light);
+    }
+
+    .product-meta strong {
+        color: var(--blue-dark);
+    }
+
+    .product-price {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 2rem;
+    }
+
+    .product-description {
+        color: var(--text-gray);
+        line-height: 1.8;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+
+    .product-description h5 {
+        color: var(--blue-dark);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .product-actions {
+        margin-bottom: 2rem;
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .quantity-input {
+        width: 100px;
+        background: var(--cream);
+        border: 2px solid var(--blue-light);
+        color: var(--text-dark);
+        padding: 0.75rem;
+        text-align: center;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .quantity-input:focus {
+        border-color: var(--blue-medium);
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(69, 123, 157, 0.25);
+    }
+
+    .btn-add-to-cart {
+        background: var(--blue-dark);
+        border: none;
+        color: var(--text-light);
+        padding: 1rem 2.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-add-to-cart:hover {
+        background: var(--blue-medium);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(29, 53, 87, 0.4);
+        color: var(--text-light);
+    }
+
+    .btn-back {
+        background: transparent;
+        border: 2px solid var(--blue-dark);
+        color: var(--blue-dark);
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: var(--blue-dark);
+        color: var(--text-light);
+        border-color: var(--blue-dark);
+    }
+
+    .related-section {
+        margin-top: 5rem;
+        padding-top: 3rem;
+        border-top: 3px solid var(--blue-light);
+    }
+
+    .related-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 2rem;
+    }
+
+    .related-product-card {
+        background: var(--text-light);
+        border: 2px solid var(--blue-light);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: 0 4px 15px rgba(29, 53, 87, 0.1);
+    }
+
+    .related-product-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--blue-medium);
+        box-shadow: 0 10px 30px rgba(29, 53, 87, 0.2);
+    }
+
+    .related-product-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        background: var(--cream);
+    }
+
+    .related-product-body {
+        padding: 1.5rem;
+    }
+
+    .related-product-name {
+        color: var(--blue-dark);
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .related-product-price {
+        color: var(--blue-dark);
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .badge-large {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .info-box {
+        background: var(--cream);
+        border: 2px solid var(--blue-light);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-box h5 {
+        color: var(--blue-dark);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .product-info {
+            padding-left: 0;
+            margin-top: 2rem;
+        }
+
+        .main-image {
+            height: 400px;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            @if($producto->multimedia->count() > 0)
-                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner rounded">
-                        {{-- Main Image --}}
-                        <div class="carousel-item active">
-                            <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/600x600?text=Sin+Imagen' }}" 
-                                 class="d-block w-100" 
-                                 alt="{{ $producto->nombre }}"
-                                 style="height: 500px; object-fit: cover;">
+<div class="product-detail">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-custom">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('tienda.index') }}">Tienda</a></li>
+                <li class="breadcrumb-item active">{{ $producto->nombre }}</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- Galería de Imágenes -->
+            <div class="col-lg-6 mb-4">
+                <div class="product-gallery">
+                    @if($producto->multimedia->count() > 0)
+                        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/600x600?text=Sin+Imagen' }}" 
+                                         class="d-block w-100 main-image" 
+                                         alt="{{ $producto->nombre }}">
+                                </div>
+                                
+                                @foreach($producto->multimedia as $media)
+                                    <div class="carousel-item">
+                                        @if($media->tipo == 'imagen')
+                                            <img src="{{ asset($media->ruta) }}" 
+                                                 class="d-block w-100 main-image" 
+                                                 alt="Imagen extra">
+                                        @else
+                                            <video src="{{ asset($media->ruta) }}" 
+                                                   class="d-block w-100 main-image" 
+                                                   controls 
+                                                   style="background: #000;"></video>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Siguiente</span>
+                            </button>
                         </div>
                         
-                        {{-- Multimedia Items --}}
-                        @foreach($producto->multimedia as $media)
-                            <div class="carousel-item">
-                                @if($media->tipo == 'imagen')
-                                    <img src="{{ asset($media->ruta) }}" 
-                                         class="d-block w-100" 
-                                         alt="Imagen extra"
-                                         style="height: 500px; object-fit: cover;">
-                                @else
-                                    <video src="{{ asset($media->ruta) }}" 
-                                           class="d-block w-100" 
-                                           controls 
-                                           style="height: 500px; object-fit: cover; background: #000;"></video>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Anterior</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Siguiente</span>
-                    </button>
-                    
-                    {{-- Thumbnails (Optional, simple version) --}}
-                    <div class="row mt-2 g-2">
-                        <div class="col-3">
+                        <div class="thumbnail-container">
                             <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/100' }}" 
-                                 class="img-thumbnail" 
-                                 style="cursor:pointer; height:80px; width:100%; object-fit:cover;"
+                                 class="thumbnail active" 
                                  onclick="$('#productCarousel').carousel(0)">
+                            @foreach($producto->multimedia as $index => $media)
+                                <img src="{{ $media->tipo == 'imagen' ? asset($media->ruta) : 'https://via.placeholder.com/100' }}" 
+                                     class="thumbnail" 
+                                     onclick="$('#productCarousel').carousel({{ $index + 1 }})">
+                            @endforeach
                         </div>
-                        @foreach($producto->multimedia as $index => $media)
-                            <div class="col-3">
-                                @if($media->tipo == 'imagen')
-                                    <img src="{{ asset($media->ruta) }}" 
-                                         class="img-thumbnail" 
-                                         style="cursor:pointer; height:80px; width:100%; object-fit:cover;"
-                                         onclick="$('#productCarousel').carousel({{ $index + 1 }})">
-                                @else
-                                    <div class="bg-dark d-flex align-items-center justify-content-center text-white img-thumbnail"
-                                         style="cursor:pointer; height:80px; width:100%;"
-                                         onclick="$('#productCarousel').carousel({{ $index + 1 }})">
-                                        <i class="bi bi-play-circle fs-3"></i>
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
+                    @else
+                        <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/600x600?text=Sin+Imagen' }}" 
+                             alt="{{ $producto->nombre }}" 
+                             class="main-image">
+                    @endif
                 </div>
-            @else
-                <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/600x600?text=Sin+Imagen' }}" 
-                     alt="{{ $producto->nombre }}" 
-                     class="img-fluid rounded" 
-                     style="width: 100%; max-height: 600px; object-fit: cover;">
-            @endif
-        </div>
-        <div class="col-lg-6">
-            <h1 class="text-white fw-bold mb-3">{{ $producto->nombre }}</h1>
-            <p class="text-white-50 mb-4">
-                <strong>Marca:</strong> {{ $producto->marca ? $producto->marca->caracteristica->nombre : 'Sin marca' }} |
-                <strong>Categoría:</strong> {{ $producto->categoria ? $producto->categoria->caracteristica->nombre : 'Sin categoría' }}
-            </p>
-            
-            <h2 class="text-info fw-bold mb-4">${{ number_format($producto->precio, 0, ',', '.') }}</h2>
-            
-            @if($producto->descripcion)
-                <div class="mb-4">
-                    <h5 class="text-white">Descripción</h5>
-                    <p class="text-white-50">{{ $producto->descripcion }}</p>
-                </div>
-            @endif
-
-            <div class="mb-4">
-                <h5 class="text-white">Disponibilidad</h5>
-                @if($producto->inventario && $producto->inventario->stock > 0)
-                    <span class="badge bg-success fs-6">En Stock ({{ $producto->inventario->stock }} unidades)</span>
-                @else
-                    <span class="badge bg-danger fs-6">Agotado</span>
-                @endif
             </div>
 
-            @if($producto->inventario && $producto->inventario->stock > 0)
-                <form action="{{ route('carrito.agregar') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="producto_id" value="{{ $producto->id }}">
-                    <div class="mb-4">
-                        <label class="form-label text-white">Cantidad</label>
-                        <input type="number" name="cantidad" class="form-control" value="1" min="1" max="{{ $producto->inventario->stock }}" style="max-width: 150px;">
+            <!-- Información del Producto -->
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <h1 class="product-name">{{ $producto->nombre }}</h1>
+                    <div class="product-meta">
+                        <strong>Marca:</strong> {{ $producto->marca ? $producto->marca->caracteristica->nombre : 'Sin marca' }} |
+                        <strong>Categoría:</strong> {{ $producto->categoria ? $producto->categoria->caracteristica->nombre : 'Sin categoría' }}
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="bi bi-cart-plus"></i> Agregar al Carrito
-                    </button>
-                </form>
-            @endif
+                    
+                    <div class="product-price">${{ number_format($producto->precio, 0, ',', '.') }}</div>
+                    
+                    @if($producto->descripcion)
+                        <div class="product-description">
+                            <h5>Descripción</h5>
+                            <p>{{ $producto->descripcion }}</p>
+                        </div>
+                    @endif
 
-            <a href="{{ route('tienda.index') }}" class="btn btn-outline-light mt-3">
-                <i class="bi bi-arrow-left"></i> Volver al Catálogo
-            </a>
+                    <div class="info-box">
+                        <h5>
+                            <i class="bi bi-box-seam"></i> Disponibilidad
+                        </h5>
+                        @if($producto->inventario && $producto->inventario->stock > 0)
+                            <span class="badge badge-success badge-large">
+                                <i class="bi bi-check-circle"></i> En Stock ({{ $producto->inventario->stock }} unidades disponibles)
+                            </span>
+                        @else
+                            <span class="badge badge-danger badge-large">
+                                <i class="bi bi-x-circle"></i> Agotado
+                            </span>
+                        @endif
+                    </div>
+
+                    @if($producto->inventario && $producto->inventario->stock > 0)
+                        <form action="{{ route('carrito.agregar') }}" method="POST" class="product-actions">
+                            @csrf
+                            <input type="hidden" name="producto_id" value="{{ $producto->id }}">
+                            <div class="quantity-selector">
+                                <label for="cantidad" style="color: var(--blue-dark); font-weight: 600;">
+                                    <i class="bi bi-123"></i> Cantidad:
+                                </label>
+                                <input type="number" 
+                                       name="cantidad" 
+                                       id="cantidad" 
+                                       class="quantity-input" 
+                                       value="1" 
+                                       min="1" 
+                                       max="{{ $producto->inventario->stock }}">
+                                <small class="text-muted">(Máx: {{ $producto->inventario->stock }})</small>
+                            </div>
+                            <button type="submit" class="btn btn-add-to-cart">
+                                <i class="bi bi-cart-plus"></i> Agregar al Carrito
+                            </button>
+                        </form>
+                    @endif
+
+                    <a href="{{ route('tienda.index') }}" class="btn btn-back">
+                        <i class="bi bi-arrow-left"></i> Volver al Catálogo
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <!-- Productos Relacionados -->
+        @if($relacionados->count() > 0)
+            <div class="related-section">
+                <h3 class="related-title">
+                    <i class="bi bi-grid"></i> Productos Relacionados
+                </h3>
+                <div class="row g-4">
+                    @foreach($relacionados as $rel)
+                        <div class="col-md-3 col-sm-6">
+                            <div class="related-product-card">
+                                <a href="{{ route('tienda.show', $rel->id) }}" style="text-decoration: none; color: inherit;">
+                                    <img src="{{ $rel->img_path ? asset($rel->img_path) : 'https://via.placeholder.com/300x200' }}" 
+                                         class="related-product-img" 
+                                         alt="{{ $rel->nombre }}">
+                                </a>
+                                <div class="related-product-body">
+                                    <a href="{{ route('tienda.show', $rel->id) }}" style="text-decoration: none; color: inherit;">
+                                        <h6 class="related-product-name">{{ $rel->nombre }}</h6>
+                                    </a>
+                                    <div class="related-product-price">${{ number_format($rel->precio, 0, ',', '.') }}</div>
+                                    <a href="{{ route('tienda.show', $rel->id) }}" class="btn btn-outline-light w-100">
+                                        Ver Detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
-
-    @if($relacionados->count() > 0)
-        <div class="mt-5">
-            <h3 class="text-white fw-bold mb-4">Productos Relacionados</h3>
-            <div class="row g-4">
-                @foreach($relacionados as $rel)
-                    <div class="col-md-3">
-                        <div class="card bg-dark text-white h-100">
-                            <img src="{{ $rel->img_path ? asset($rel->img_path) : 'https://via.placeholder.com/300x200' }}" 
-                                 class="card-img-top" alt="{{ $rel->nombre }}" style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ $rel->nombre }}</h6>
-                                <p class="text-info fw-bold">${{ number_format($rel->precio, 0, ',', '.') }}</p>
-                                <a href="{{ route('tienda.show', $rel->id) }}" class="btn btn-sm btn-outline-light">Ver Detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    // Actualizar thumbnail activo
+    document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+        thumb.addEventListener('click', function() {
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Actualizar thumbnail cuando cambia el carousel
+    const carousel = document.querySelector('#productCarousel');
+    if (carousel) {
+        carousel.addEventListener('slid.bs.carousel', function (e) {
+            const activeIndex = Array.from(this.querySelectorAll('.carousel-item')).indexOf(e.relatedTarget);
+            document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === activeIndex);
+            });
+        });
+    }
+</script>
 @endsection

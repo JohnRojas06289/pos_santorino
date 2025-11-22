@@ -5,108 +5,295 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Bajo Cero - Tu tienda especializada en chaquetas y ropa de invierno. Encuentra las mejores chaquetas para enfrentar el frío con estilo." />
+    <meta name="description" content="Bajo Cero - Tu tienda especializada en chaquetas y gorras de última tendencia. Estilo urbano, calidad y diseño en cada prenda." />
     <meta name="author" content="Bajo Cero" />
-    <title>Bajo Cero - Chaquetas Premium</title>
+    <title>Bajo Cero - Chaquetas y Gorras Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         :root {
-            --ice-blue: #A8DADC;
-            --deep-blue: #1D3557;
-            --navy: #457B9D;
-            --frost-white: #F1FAEE;
-            --accent-red: #E63946;
+            /* Paleta basada en el logo */
+            --blue-dark: #1D3557;
+            --blue-medium: #457B9D;
+            --blue-light: #A8DADC;
+            --cream: #F1FAEE;
+            --accent: #E63946;
+            --text-dark: #0A0A0A;
+            --text-light: #FFFFFF;
+            --text-gray: #6B7280;
+            --border: rgba(29, 53, 87, 0.2);
         }
 
         * {
-            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background: linear-gradient(135deg, var(--deep-blue) 0%, #2C4A66 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
         }
 
+        /* Navbar Moderno y Urbano */
         .navbar {
-            background: rgba(29, 53, 87, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(241, 250, 238, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--blue-light);
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(29, 53, 87, 0.1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(241, 250, 238, 0.98) !important;
+            box-shadow: 0 4px 30px rgba(29, 53, 87, 0.15);
         }
 
         .navbar-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
             font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--ice-blue) !important;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: var(--blue-dark) !important;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-brand::after {
+            content: '00';
+            position: absolute;
+            top: -5px;
+            left: -25px;
+            font-size: 1.2rem;
+            opacity: 0.3;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            color: var(--blue-medium) !important;
         }
 
         .nav-link {
-            color: var(--frost-white) !important;
+            color: var(--blue-dark) !important;
             font-weight: 500;
+            font-size: 0.95rem;
+            margin: 0 0.5rem;
+            position: relative;
             transition: color 0.3s ease;
         }
 
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--blue-medium);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
         .nav-link:hover {
-            color: var(--ice-blue) !important;
+            color: var(--blue-medium) !important;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-red), #C5303D);
+        .btn-danger {
+            background: var(--blue-dark);
             border: none;
-            padding: 10px 30px;
+            padding: 0.6rem 1.5rem;
             font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            color: var(--text-light);
         }
 
-        .btn-primary:hover {
+        .btn-danger:hover {
+            background: var(--blue-medium);
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(230, 57, 70, 0.6);
+            box-shadow: 0 8px 25px rgba(29, 53, 87, 0.3);
+            color: var(--text-light);
+        }
+
+        /* Hero Section Moderno y Urbano */
+        .hero-section {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--blue-light) 100%);
+        }
+
+        .carousel-item {
+            height: 85vh;
+            position: relative;
         }
 
         .carousel-item img {
-            height: 600px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            filter: brightness(0.9);
+            filter: brightness(0.7);
+        }
+
+        .carousel-caption {
+            bottom: 25%;
+            left: 10%;
+            right: 10%;
+            text-align: left;
+        }
+
+        .carousel-caption h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+        }
+
+        .carousel-caption p {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 400;
+            color: var(--text-light);
+            text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .btn-hero {
+            background: var(--blue-dark);
+            color: var(--text-light);
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .btn-hero:hover {
+            background: var(--blue-medium);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(29, 53, 87, 0.4);
+            color: var(--text-light);
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--text-light);
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero-outline:hover {
+            background: var(--text-light);
+            color: var(--blue-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 6rem 0;
+            background: var(--cream);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--blue-dark);
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(168, 218, 220, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--text-light);
+            border: 2px solid var(--blue-light);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            height: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(29, 53, 87, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blue-dark), var(--blue-medium));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(168, 218, 220, 0.2);
+            border-color: var(--blue-medium);
+            box-shadow: 0 20px 60px rgba(29, 53, 87, 0.2);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            color: var(--ice-blue);
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            color: var(--blue-medium);
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: transform 0.3s ease;
         }
 
-        .section-title {
-            font-weight: 700;
-            font-size: 2.5rem;
-            color: var(--frost-white);
-            margin-bottom: 50px;
-            text-align: center;
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
+        .feature-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-bottom: 1rem;
+        }
+
+        .feature-text {
+            color: var(--text-gray);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, rgba(230, 57, 70, 0.9), rgba(197, 48, 61, 0.9));
-            padding: 80px 0;
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-medium) 100%);
+            padding: 6rem 0;
             position: relative;
             overflow: hidden;
         }
@@ -118,162 +305,312 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            animation: pulse 15s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(168, 218, 220, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-cta {
+            background: var(--text-light);
+            color: var(--blue-dark);
+            padding: 1rem 3rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            background: var(--blue-light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: var(--blue-dark);
+        }
+
+        /* Footer */
         footer {
-            background: rgba(29, 53, 87, 0.95);
-            padding: 40px 0 20px;
+            background: var(--blue-dark);
+            padding: 4rem 0 2rem;
+            color: var(--text-light);
+        }
+
+        .footer-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--blue-light);
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .social-link:hover {
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(168, 218, 220, 0.2);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--blue-light);
+        }
+
+        .footer-link {
+            color: var(--blue-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--text-light);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 70vh;
+            }
+
+            .carousel-caption {
+                left: 5%;
+                right: 5%;
+                bottom: 20%;
+            }
+
+            .features-section {
+                padding: 4rem 0;
+            }
         }
     </style>
 </head>
 
 <body>
-
-    <!--Barra de navegación--->
-    <nav class="navbar navbar-expand-md sticky-top">
-        <div class="container-fluid">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
             <a class="navbar-brand" href="{{route('panel')}}">
-                ❄️ BAJO CERO
+                BAJO CERO
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{route('panel')}}">Inicio</a>
+                        <a class="nav-link active" href="{{route('panel')}}">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('tienda.index')}}">Tienda</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('tienda.index')}}?categoria=chaquetas">Chaquetas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('tienda.index')}}?categoria=gorras">Gorras</a>
+                    </li>
                 </ul>
-
-                <form class="d-flex" action="{{route('login.index')}}" method="get">
-                    <button class="btn btn-primary" type="submit">Iniciar sesión</button>
+                <form class="d-flex ms-3" action="{{route('login.index')}}" method="get">
+                    <button class="btn btn-danger" type="submit">Iniciar sesión</button>
                 </form>
-
             </div>
         </div>
     </nav>
 
-    <!--Carrusel--->
-    <div id="carouselExample" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <!-- Hero Carousel -->
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{asset('assets/img/img_carrusel_1.png')}}" class="d-block w-100" alt="Chaquetas Premium Bajo Cero">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 style="font-size: 3.5rem; font-weight: 700; text-shadow: 2px 2px 10px rgba(0,0,0,0.7);">Enfrenta el Frío con Estilo</h1>
-                    <p style="font-size: 1.3rem; text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">Chaquetas premium diseñadas para el invierno extremo</p>
+                <img src="{{asset('assets/img/img_carrusel_1.png')}}" class="d-block w-100" alt="Chaquetas Premium">
+                <div class="carousel-caption">
+                    <h1>Estilo que Define</h1>
+                    <p>Descubre nuestra colección exclusiva de chaquetas y gorras con diseño urbano</p>
+                    <div class="mt-4">
+                        <a href="{{route('tienda.index')}}" class="btn btn-hero">Explorar Colección</a>
+                        <a href="{{route('tienda.index')}}?categoria=chaquetas" class="btn btn-hero-outline">Ver Chaquetas</a>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{asset('assets/img/img_carrusel_2.png')}}" class="d-block w-100" alt="Colección Invierno">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 style="font-size: 3.5rem; font-weight: 700; text-shadow: 2px 2px 10px rgba(0,0,0,0.7);">Nueva Colección 2025</h1>
-                    <p style="font-size: 1.3rem; text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">Descubre los últimos diseños en chaquetas de invierno</p>
+                <img src="{{asset('assets/img/img_carrusel_2.png')}}" class="d-block w-100" alt="Nueva Colección">
+                <div class="carousel-caption">
+                    <h1>Nueva Colección 2025</h1>
+                    <p>Tendencias urbanas que marcan la diferencia en cada prenda</p>
+                    <div class="mt-4">
+                        <a href="{{route('tienda.index')}}" class="btn btn-hero">Ver Novedades</a>
+                        <a href="{{route('tienda.index')}}?categoria=gorras" class="btn btn-hero-outline">Ver Gorras</a>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="{{asset('assets/img/img_carrusel_3.png')}}" class="d-block w-100" alt="Calidad Premium">
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 style="font-size: 3.5rem; font-weight: 700; text-shadow: 2px 2px 10px rgba(0,0,0,0.7);">Calidad que Abriga</h1>
-                    <p style="font-size: 1.3rem; text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">Materiales de primera calidad para máxima protección</p>
+                <div class="carousel-caption">
+                    <h1>Calidad Premium</h1>
+                    <p>Diseño, confort y durabilidad en cada prenda que usas</p>
+                    <div class="mt-4">
+                        <a href="{{route('tienda.index')}}" class="btn btn-hero">Explorar</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="##carouselExample" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden">Siguiente</span>
         </button>
     </div>
 
-    <!--Section Características--->
-    <div class="container-md py-5">
-        <h2 class="section-title mt-5">¿Por Qué Elegir Bajo Cero?</h2>
-        <div class="row my-4 g-4">
-            <div class="col-lg-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon">🧥</div>
-                    <h4 style="color: var(--ice-blue); font-weight: 600;">Diseño Premium</h4>
-                    <p style="color: var(--frost-white);">Chaquetas diseñadas con las últimas tendencias de moda invernal, combinando estilo y funcionalidad.</p>
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title fade-in">¿Por Qué Elegirnos?</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in">
+                        <i class="bi bi-star-fill feature-icon"></i>
+                        <h4 class="feature-title">Diseño Exclusivo</h4>
+                        <p class="feature-text">Chaquetas y gorras diseñadas con las últimas tendencias de moda urbana, combinando estilo único y funcionalidad en cada detalle.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon">❄️</div>
-                    <h4 style="color: var(--ice-blue); font-weight: 600;">Máxima Protección</h4>
-                    <p style="color: var(--frost-white);">Materiales térmicos de alta calidad que te protegen del frío extremo sin sacrificar comodidad.</p>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in">
+                        <i class="bi bi-shield-check feature-icon"></i>
+                        <h4 class="feature-title">Calidad Garantizada</h4>
+                        <p class="feature-text">Materiales premium y procesos de fabricación cuidadosos que garantizan durabilidad y confort excepcional en cada prenda.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="feature-card text-center">
-                    <div class="feature-icon">✨</div>
-                    <h4 style="color: var(--ice-blue); font-weight: 600;">Durabilidad Garantizada</h4>
-                    <p style="color: var(--frost-white);">Costuras reforzadas y materiales resistentes que garantizan años de uso en las condiciones más duras.</p>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card fade-in">
+                        <i class="bi bi-lightning-charge feature-icon"></i>
+                        <h4 class="feature-title">Envío Rápido</h4>
+                        <p class="feature-text">Recibe tus pedidos de forma rápida y segura. Envíos a todo el país con el mejor servicio de entrega disponible.</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!--Section CTA--->
-    <section class="cta-section text-center">
-        <div class="container p-5 position-relative" style="z-index: 1;">
-            <h2 class="text-white mb-4" style="font-size: 3rem; font-weight: 700;">Prepárate para el Invierno</h2>
-            <p class="text-white mb-5" style="font-size: 1.3rem;">Explora nuestra colección completa y encuentra la chaqueta perfecta para ti</p>
-            <div>
-                <a href="{{route('tienda.index')}}" role="button" class="btn btn-primary btn-lg">Ver Catálogo</a>
             </div>
         </div>
     </section>
 
-    <!--Footer--->
-    <footer class="text-center text-white">
-        <div class="container p-4 pb-0">
-            <section class="mb-4">
-                <p style="color: var(--ice-blue); font-size: 1.1rem; font-weight: 600;">Síguenos en Redes Sociales</p>
-                
-                <!-- Instagram -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#" role="button" target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
-                    </svg>
-                </a>
-
-                <!-- Facebook -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#" role="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-                    </svg>
-                </a>
-
-                <!-- WhatsApp -->
-                <a class="btn btn-outline-light btn-floating m-1" href="#" role="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                    </svg>
-                </a>
-            </section>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content text-center">
+                <h2 class="cta-title">Prepárate para el Estilo</h2>
+                <p class="cta-text">Explora nuestra colección completa y encuentra la prenda perfecta que refleje tu personalidad urbana</p>
+                <a href="{{route('tienda.index')}}" class="btn btn-cta">Ver Catálogo Completo</a>
+            </div>
         </div>
+    </section>
 
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.3);">
-            © 2025 Bajo Cero - Todos los derechos reservados
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">BAJO CERO</h5>
+                    <p style="color: var(--blue-light); line-height: 1.8;">Tu destino para chaquetas y gorras de última tendencia. Estilo urbano, calidad y diseño en cada prenda.</p>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{route('panel')}}" class="footer-link">Inicio</a></li>
+                        <li class="mb-2"><a href="{{route('tienda.index')}}" class="footer-link">Tienda</a></li>
+                        <li class="mb-2"><a href="{{route('tienda.index')}}?categoria=chaquetas" class="footer-link">Chaquetas</a></li>
+                        <li class="mb-2"><a href="{{route('tienda.index')}}?categoria=gorras" class="footer-link">Gorras</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="footer-title">Síguenos</h5>
+                    <div>
+                        <a href="#" class="social-link" target="_blank" aria-label="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" target="_blank" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link" target="_blank" aria-label="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2025 Bajo Cero. Todos los derechos reservados.</p>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 
 </html>
