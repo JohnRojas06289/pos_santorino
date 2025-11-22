@@ -23,7 +23,17 @@ class ProductoService
             'marca_id' => $data['marca_id'],
             'categoria_id' => $data['categoria_id'],
             'presentacione_id' => $data['presentacione_id'],
+            'color' => $data['color'] ?? null,
+            'genero' => $data['genero'] ?? 'unisex',
         ]);
+
+        if (isset($data['images'])) {
+            $this->handleUploadMultimedia($data['images'], $producto, 'imagen');
+        }
+
+        if (isset($data['videos'])) {
+            $this->handleUploadMultimedia($data['videos'], $producto, 'video');
+        }
 
         return $producto;
     }
@@ -44,7 +54,17 @@ class ProductoService
             'marca_id' => $data['marca_id'],
             'categoria_id' => $data['categoria_id'],
             'presentacione_id' => $data['presentacione_id'],
+            'color' => $data['color'] ?? null,
+            'genero' => $data['genero'] ?? 'unisex',
         ]);
+
+        if (isset($data['images'])) {
+            $this->handleUploadMultimedia($data['images'], $producto, 'imagen');
+        }
+
+        if (isset($data['videos'])) {
+            $this->handleUploadMultimedia($data['videos'], $producto, 'video');
+        }
 
         return $producto;
     }
@@ -65,7 +85,23 @@ class ProductoService
         }
 
         $name = uniqid() . '.' . $image->getClientOriginalExtension();
-        $path = 'storage/' . $image->storeAs('productos', $name);
+        $path = 'storage/' . $image->storeAs('productos', $name, 'public');
         return $path;
+    }
+
+    /**
+     * Guarda multimedia en el Storage
+     */
+    private function handleUploadMultimedia(array $files, Producto $producto, string $tipo): void
+    {
+        foreach ($files as $file) {
+            $name = uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = 'storage/' . $file->storeAs('productos/multimedia', $name, 'public');
+
+            $producto->multimedia()->create([
+                'ruta' => $path,
+                'tipo' => $tipo
+            ]);
+        }
     }
 }

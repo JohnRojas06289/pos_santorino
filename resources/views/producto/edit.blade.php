@@ -7,6 +7,26 @@
     #descripcion {
         resize: none;
     }
+    .multimedia-item {
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+    }
+    .multimedia-item .btn-delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(255,0,0,0.7);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -92,11 +112,53 @@
 
                         <div class="row g-4">
 
-                            <!---Imagen---->
+                            <!---Imagen Principal---->
                             <div class="col-12">
-                                <label for="img_path" class="form-label">Imagen:</label>
+                                <label for="img_path" class="form-label">Imagen Principal:</label>
                                 <input type="file" name="img_path" id="img_path" class="form-control" accept="image/*">
                                 @error('img_path')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Galería de Imágenes---->
+                            <div class="col-12">
+                                <label for="images" class="form-label">Agregar más imágenes:</label>
+                                <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple>
+                                @error('images.*')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Galería de Videos---->
+                            <div class="col-12">
+                                <label for="videos" class="form-label">Agregar más videos:</label>
+                                <input type="file" name="videos[]" id="videos" class="form-control" accept="video/*" multiple>
+                                @error('videos.*')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Color---->
+                            <div class="col-12">
+                                <label for="color" class="form-label">Color:</label>
+                                <input type="text" name="color" id="color" class="form-control" value="{{old('color', $producto->color)}}" placeholder="Ej: Rojo, Azul, Negro">
+                                @error('color')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Género---->
+                            <div class="col-12">
+                                <label for="genero" class="form-label">Género:</label>
+                                <select name="genero" id="genero" class="form-select">
+                                    <option value="unisex" {{ old('genero', $producto->genero) == 'unisex' ? 'selected' : '' }}>Unisex</option>
+                                    <option value="hombre" {{ old('genero', $producto->genero) == 'hombre' ? 'selected' : '' }}>Hombre</option>
+                                    <option value="mujer" {{ old('genero', $producto->genero) == 'mujer' ? 'selected' : '' }}>Mujer</option>
+                                    <option value="niño" {{ old('genero', $producto->genero) == 'niño' ? 'selected' : '' }}>Niño</option>
+                                    <option value="niña" {{ old('genero', $producto->genero) == 'niña' ? 'selected' : '' }}>Niña</option>
+                                </select>
+                                @error('genero')
                                 <small class="text-danger">{{'*'.$message}}</small>
                                 @enderror
                             </div>
@@ -170,29 +232,54 @@
                     </div>
 
                     <div class="col-md-6">
-                        <p>Imagen del producto:</p>
+                        <p>Imagen Principal:</p>
 
                         <img id="img-default"
-                            class="img-fluid"
+                            class="img-fluid mb-3"
                             src="{{ $producto->img_path ? asset($producto->img_path) : asset('assets/img/paisaje.png') }}"
                             alt="Imagen por defecto">
 
                         <img src="" alt="Ha cargado un archivo no compatible"
                             id="img-preview"
-                            class="img-fluid img-thumbnail" style="display: none;">
+                            class="img-fluid img-thumbnail mb-3" style="display: none;">
+                        
+                        <hr>
+                        <p>Galería Multimedia:</p>
+                        <div class="row">
+                            @foreach($producto->multimedia as $media)
+                                <div class="col-md-4 mb-3">
+                                    <div class="multimedia-item">
+                                        @if($media->tipo == 'imagen')
+                                            <img src="{{ asset($media->ruta) }}" class="img-thumbnail" style="width:100%; height:100px; object-fit:cover;">
+                                        @else
+                                            <video src="{{ asset($media->ruta) }}" class="img-thumbnail" style="width:100%; height:100px; object-fit:cover;"></video>
+                                        @endif
+                                        
+                                        {{-- Formulario para eliminar --}}
+                                        <button type="button" class="btn-delete" onclick="deleteMedia({{ $media->id }})">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
                 </div>
 
             </div>
             <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <button type="reset" class="btn btn-secondary">Reiniciar</button>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{{ route('productos.index') }}" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
+        
+        {{-- Formulario oculto para eliminar multimedia --}}
+        <form id="deleteMediaForm" action="" method="POST" style="display:none;">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
-
-
 
 </div>
 @endsection
@@ -216,5 +303,13 @@
             reader.readAsDataURL(this.files[0]);
         }
     });
+
+    function deleteMedia(id) {
+        if(confirm('¿Estás seguro de eliminar este archivo?')) {
+            const form = document.getElementById('deleteMediaForm');
+            form.action = '/producto-multimedia/' + id;
+            form.submit();
+        }
+    }
 </script>
 @endpush

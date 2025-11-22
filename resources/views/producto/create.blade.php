@@ -56,11 +56,31 @@
 
                         <div class="row g-4">
 
-                            <!---Imagen---->
+                            <!---Imagen Principal---->
                             <div class="col-12">
-                                <label for="img_path" class="form-label">Imagen:</label>
+                                <label for="img_path" class="form-label">Imagen Principal:</label>
                                 <input type="file" name="img_path" id="img_path" class="form-control" accept="image/*">
                                 @error('img_path')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Galería de Imágenes---->
+                            <div class="col-12">
+                                <label for="images" class="form-label">Galería de Imágenes:</label>
+                                <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple>
+                                <small class="text-muted">Puedes seleccionar varias imágenes.</small>
+                                @error('images.*')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Galería de Videos---->
+                            <div class="col-12">
+                                <label for="videos" class="form-label">Galería de Videos:</label>
+                                <input type="file" name="videos[]" id="videos" class="form-control" accept="video/*" multiple>
+                                <small class="text-muted">Puedes seleccionar varios videos.</small>
+                                @error('videos.*')
                                 <small class="text-danger">{{'*'.$message}}</small>
                                 @enderror
                             </div>
@@ -70,6 +90,30 @@
                                 <label for="codigo" class="form-label">Código:</label>
                                 <input type="text" name="codigo" id="codigo" class="form-control" value="{{old('codigo')}}">
                                 @error('codigo')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Color---->
+                            <div class="col-12">
+                                <label for="color" class="form-label">Color:</label>
+                                <input type="text" name="color" id="color" class="form-control" value="{{old('color')}}" placeholder="Ej: Rojo, Azul, Negro">
+                                @error('color')
+                                <small class="text-danger">{{'*'.$message}}</small>
+                                @enderror
+                            </div>
+
+                            <!---Género---->
+                            <div class="col-12">
+                                <label for="genero" class="form-label">Género:</label>
+                                <select name="genero" id="genero" class="form-select">
+                                    <option value="unisex" {{ old('genero') == 'unisex' ? 'selected' : '' }}>Unisex</option>
+                                    <option value="hombre" {{ old('genero') == 'hombre' ? 'selected' : '' }}>Hombre</option>
+                                    <option value="mujer" {{ old('genero') == 'mujer' ? 'selected' : '' }}>Mujer</option>
+                                    <option value="niño" {{ old('genero') == 'niño' ? 'selected' : '' }}>Niño</option>
+                                    <option value="niña" {{ old('genero') == 'niña' ? 'selected' : '' }}>Niña</option>
+                                </select>
+                                @error('genero')
                                 <small class="text-danger">{{'*'.$message}}</small>
                                 @enderror
                             </div>

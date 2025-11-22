@@ -13,6 +13,8 @@ use App\Services\ProductoService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
+use App\Models\ProductoMultimedia;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class ProductoController extends Controller
@@ -24,23 +26,104 @@ class ProductoController extends Controller
         $this->productoService = $productoService;
         $this->middleware('permission:ver-producto|crear-producto|editar-producto|eliminar-producto', ['only' => ['index']]);
         $this->middleware('permission:crear-producto', ['only' => ['create', 'store']]);
-        $this->middleware('permission:editar-producto', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:editar-producto', ['only' => ['edit', 'update', 'destroyMultimedia']]);
         $this->middleware('permission:eliminar-producto', ['only' => ['destroy']]);
+    }
+
+    public function destroyMultimedia($id)
+    {
+        try {
+            $media = ProductoMultimedia::findOrFail($id);
+            
+            // Eliminar archivo del storage
+            $path = str_replace('storage/', '', $media->ruta);
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+
+            $media->delete();
+
+            return back()->with('success', 'Archivo eliminado correctamente');
+        } catch (Throwable $e) {
+            Log::error('Error al eliminar multimedia', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Error al eliminar el archivo');
+        }
     }
     /**
      * Display a listing of the resource.
      */
     public function index(): View
     {
-        $productos = Producto::with([
+        $query = Producto::with([
             'categoria.caracteristica',
             'marca.caracteristica',
-            'presentacione.caracteristica'
-        ])
-            ->latest()
-            ->get();
+            'presentacione.caracteristica',
+            'inventario'
+        ]);
 
-        return view('producto.index', compact('productos'));
+        // Filtro por búsqueda
+        if (request()->filled('search')) {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                  ->orWhere('codigo', 'like', "%{$search}%")
+                  ->orWhere('descripcion', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtro por marca
+        if (request()->filled('marca_id')) {
+            $query->where('marca_id', request('marca_id'));
+        }
+
+        // Filtro por categoría
+        if (request()->filled('categoria_id')) {
+            $query->where('categoria_id', request('categoria_id'));
+        }
+
+        // Filtro por color
+        if (request()->filled('color')) {
+            $query->where('color', request('color'));
+        }
+
+        // Filtro por género
+        if (request()->filled('genero')) {
+            $query->where('genero', request('genero'));
+        }
+
+        // Filtro por estado
+        if (request()->filled('estado')) {
+            $query->where('estado', request('estado'));
+        }
+
+        // Ordenamiento
+        $orderBy = request('order_by', 'created_at');
+        $orderDir = request('order_dir', 'desc');
+
+        switch ($orderBy) {
+            case 'nombre':
+                $query->orderBy('nombre', $orderDir);
+                break;
+            case 'precio':
+                $query->orderBy('precio', $orderDir);
+                break;
+            case 'stock':
+                $query->leftJoin('inventarios', 'productos.id', '=', 'inventarios.producto_id')
+                      ->select('productos.*', 'inventarios.stock')
+                      ->orderBy('inventarios.stock', $orderDir);
+                break;
+            default:
+                $query->orderBy('created_at', $orderDir);
+        }
+
+        $productos = $query->paginate(12)->appends(request()->query());
+
+        // Obtener datos para filtros
+        $marcas = Marca::with('caracteristica')->get();
+        $categorias = Categoria::with('caracteristica')->get();
+        $colores = Producto::whereNotNull('color')->distinct()->pluck('color');
+
+        return view('producto.index', compact('productos', 'marcas', 'categorias', 'colores'));
     }
 
     /**

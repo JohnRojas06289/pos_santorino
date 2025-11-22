@@ -131,17 +131,6 @@
             background: rgba(29, 53, 87, 0.95);
             padding: 40px 0 20px;
         }
-
-        .snowflake {
-            position: absolute;
-            color: rgba(168, 218, 220, 0.3);
-            font-size: 1.5rem;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(100vh); }
-        }
     </style>
 </head>
 
@@ -162,10 +151,7 @@
                         <a class="nav-link active" aria-current="page" href="{{route('panel')}}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Colección</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link" href="{{route('tienda.index')}}">Tienda</a>
                     </li>
                 </ul>
 
@@ -202,7 +188,7 @@
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="##carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
@@ -246,7 +232,7 @@
             <h2 class="text-white mb-4" style="font-size: 3rem; font-weight: 700;">Prepárate para el Invierno</h2>
             <p class="text-white mb-5" style="font-size: 1.3rem;">Explora nuestra colección completa y encuentra la chaqueta perfecta para ti</p>
             <div>
-                <a href="{{route('login.index') }}" role="button" class="btn btn-primary btn-lg">Ver Catálogo</a>
+                <a href="{{route('tienda.index')}}" role="button" class="btn btn-primary btn-lg">Ver Catálogo</a>
             </div>
         </div>
     </section>

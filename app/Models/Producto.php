@@ -49,6 +49,11 @@ class Producto extends Model
         return $this->hasOne(Inventario::class);
     }
 
+    public function multimedia(): HasMany
+    {
+        return $this->hasMany(ProductoMultimedia::class);
+    }
+
     public function kardex(): HasMany
     {
         return $this->hasMany(Kardex::class);

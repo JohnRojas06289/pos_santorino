@@ -48,8 +48,18 @@ class InventarioControlller extends Controller
     {
         DB::beginTransaction();
         try {
-            $kardex->crearRegistro($request->validated(), TipoTransaccionEnum::Apertura);
-            Inventario::create($request->validated());
+            $data = $request->validated();
+            
+            // Actualizar precio de venta del producto
+            $producto = Producto::findOrFail($data['producto_id']);
+            $producto->update(['precio' => $data['precio_venta']]);
+            
+            // Remover precio_venta de los datos para el inventario
+            unset($data['precio_venta']);
+
+            $kardex->crearRegistro($data, TipoTransaccionEnum::Apertura);
+            Inventario::create($data);
+            
             DB::commit();
             ActivityLogService::log('Inicialiación de producto', 'Productos', $request->validated());
             return redirect()->route('productos.index')->with('success', 'Producto inicializado');

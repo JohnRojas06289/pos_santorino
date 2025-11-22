@@ -24,6 +24,10 @@ use App\Http\Controllers\proveedorController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\ventaController;
+use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +49,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::resource('presentaciones', presentacioneController::class)->except('show');
     Route::resource('marcas', marcaController::class)->except('show');
     Route::resource('productos', ProductoController::class)->except('show', 'destroy');
+    Route::delete('/producto-multimedia/{id}', [ProductoController::class, 'destroyMultimedia'])->name('producto-multimedia.destroy');
     Route::resource('clientes', clienteController::class)->except('show');
     Route::resource('proveedores', proveedorController::class)->except('show');
     Route::resource('compras', compraController::class)->except('edit', 'update', 'destroy');
@@ -78,6 +83,27 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/logout', [logoutController::class, 'logout'])->name('logout');
 });
 
+// Rutas públicas del E-commerce
+Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda.index');
+Route::get('/tienda/producto/{id}', [TiendaController::class, 'show'])->name('tienda.show');
+
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
+Route::post('/carrito/actualizar', [CarritoController::class, 'actualizar'])->name('carrito.actualizar');
+Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
+Route::post('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/procesar', [CheckoutController::class, 'procesar'])->name('checkout.procesar');
+Route::get('/pedido/confirmado/{id}', [CheckoutController::class, 'confirmacion'])->name('checkout.confirmacion');
+
+// Rutas admin para gestión de pedidos
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+    Route::post('/pedidos/{id}/actualizar', [PedidoController::class, 'actualizar'])->name('pedidos.actualizar');
+    Route::post('/pedidos/{id}/procesar', [PedidoController::class, 'convertirAVenta'])->name('pedidos.procesar');
+});
 
 
 Route::get('/login', [loginController::class, 'index'])->name('login.index');
