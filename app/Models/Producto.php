@@ -88,4 +88,48 @@ class Producto extends Model
     {
         return "Código: {$this->codigo} - {$this->nombre} - Presentación: {$this->presentacione->sigla}";
     }
+
+    /**
+     * Obtener el stock real del producto desde el Kardex
+     * Si no hay registro en Kardex, intenta obtenerlo del inventario
+     */
+    public function getStockRealAttribute(): int
+    {
+        // Primero intenta obtener el stock del Kardex (más preciso)
+        // Si ya está cargado en la relación, úsalo directamente
+        if ($this->relationLoaded('kardex') && $this->kardex->isNotEmpty()) {
+            $ultimoKardex = $this->kardex->first();
+            if ($ultimoKardex && isset($ultimoKardex->saldo)) {
+                return (int) $ultimoKardex->saldo;
+            }
+        }
+        
+        // Si no está cargado, consulta directamente
+        $ultimoKardex = $this->kardex()->latest('id')->first();
+        if ($ultimoKardex && isset($ultimoKardex->saldo)) {
+            return (int) $ultimoKardex->saldo;
+        }
+
+        // Si no hay Kardex, intenta obtenerlo del inventario
+        // Usar relationLoaded para evitar consultas adicionales si ya está cargado
+        if ($this->relationLoaded('inventario') && $this->inventario) {
+            return (int) ($this->inventario->cantidad ?? 0);
+        }
+        
+        // Si no está cargado, consulta directamente
+        $inventario = $this->inventario;
+        if ($inventario) {
+            return (int) ($inventario->cantidad ?? 0);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Verificar si el producto tiene stock disponible
+     */
+    public function tieneStock(): bool
+    {
+        return $this->stock_real > 0;
+    }
 }

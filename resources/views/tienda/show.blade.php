@@ -364,9 +364,9 @@
                         <h5>
                             <i class="bi bi-box-seam"></i> Disponibilidad
                         </h5>
-                        @if($producto->inventario && $producto->inventario->stock > 0)
+                        @if($producto->tieneStock())
                             <span class="badge badge-success badge-large">
-                                <i class="bi bi-check-circle"></i> En Stock ({{ $producto->inventario->stock }} unidades disponibles)
+                                <i class="bi bi-check-circle"></i> En Stock ({{ $producto->stock_real }} unidades disponibles)
                             </span>
                         @else
                             <span class="badge badge-danger badge-large">
@@ -375,7 +375,7 @@
                         @endif
                     </div>
 
-                    @if($producto->inventario && $producto->inventario->stock > 0)
+                    @if($producto->tieneStock())
                         <form action="{{ route('carrito.agregar') }}" method="POST" class="product-actions">
                             @csrf
                             <input type="hidden" name="producto_id" value="{{ $producto->id }}">
@@ -389,8 +389,8 @@
                                        class="quantity-input" 
                                        value="1" 
                                        min="1" 
-                                       max="{{ $producto->inventario->stock }}">
-                                <small class="text-muted">(Máx: {{ $producto->inventario->stock }})</small>
+                                       max="{{ $producto->stock_real }}">
+                                <small class="text-muted">(Máx: {{ $producto->stock_real }})</small>
                             </div>
                             <button type="submit" class="btn btn-add-to-cart">
                                 <i class="bi bi-cart-plus"></i> Agregar al Carrito

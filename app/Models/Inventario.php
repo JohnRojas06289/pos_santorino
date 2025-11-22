@@ -32,4 +32,13 @@ class Inventario extends Model
     {
         return $this->fecha_vencimiento ? $this->fecha_vencimiento->format('d/m/Y') : '';
     }
+
+    /**
+     * Accessor para obtener el stock (compatibilidad con código existente)
+     * El stock real viene del Kardex, pero este accessor devuelve la cantidad del inventario
+     */
+    public function getStockAttribute(): int
+    {
+        return $this->cantidad ?? 0;
+    }
 }

@@ -11,7 +11,9 @@ class TiendaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Producto::with(['categoria', 'marca', 'presentacione', 'inventario'])
+        $query = Producto::with(['categoria', 'marca', 'presentacione', 'inventario', 'kardex' => function($q) {
+            $q->latest('id')->limit(1);
+        }])
             ->where('estado', 1); // Solo productos activos
 
         // Filtro por categoría
@@ -46,16 +48,31 @@ class TiendaController extends Controller
 
     public function show($id)
     {
-        $producto = Producto::with(['categoria', 'marca', 'presentacione', 'inventario'])
+        $producto = Producto::with(['categoria', 'marca', 'presentacione', 'inventario', 'kardex' => function($q) {
+            $q->latest('id')->limit(1);
+        }])
             ->findOrFail($id);
 
         // Productos relacionados (misma categoría)
-        $relacionados = Producto::where('categoria_id', $producto->categoria_id)
+        $relacionados = Producto::with(['inventario', 'kardex' => function($q) {
+            $q->latest('id')->limit(1);
+        }])
+            ->where('categoria_id', $producto->categoria_id)
             ->where('id', '!=', $producto->id)
             ->where('estado', 1)
             ->limit(4)
             ->get();
 
         return view('tienda.show', compact('producto', 'relacionados'));
+    }
+
+    public function about()
+    {
+        return view('tienda.about');
+    }
+
+    public function contact()
+    {
+        return view('tienda.contact');
     }
 }

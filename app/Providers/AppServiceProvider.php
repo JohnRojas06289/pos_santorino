@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('cart', function ($app) {
+            return new \App\Services\CartService();
+        });
     }
 
     /**
@@ -27,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
+
+        // Register Alias dynamically
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('Cart', \App\Facades\Cart::class);
     }
 }

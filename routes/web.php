@@ -86,6 +86,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 // Rutas públicas del E-commerce
 Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda.index');
 Route::get('/tienda/producto/{id}', [TiendaController::class, 'show'])->name('tienda.show');
+Route::get('/quienes-somos', [TiendaController::class, 'about'])->name('tienda.about');
+Route::get('/contacto', [TiendaController::class, 'contact'])->name('tienda.contact');
 
 Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
 Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
