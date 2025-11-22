@@ -153,6 +153,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- Logo interactivo -->
+                <div class="col-lg-4 d-flex align-items-center justify-content-center">
+                    <div class="logo-container" id="logoContainer">
+                        <!-- Aquí puedes colocar la imagen del logo sin fondo -->
+                        <img src="{{ asset('images/logo.jpeg') }}" alt="Logo" class="logo-img" style="width:100%; max-width:250px;">
+                        <!-- Ojos simulados -->
+                        <div class="eye left-eye"></div>
+                        <div class="eye right-eye"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

@@ -213,12 +213,38 @@
             margin-right: 10px;
         }
 
-        .social-icon:hover {
-            border-color: var(--accent-neon);
-            color: var(--accent-neon);
-            box-shadow: var(--glow);
-            transform: translateY(-3px);
+        /* Logo interactivo */
+        .logo-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
         }
+        .logo-container .logo-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .eye {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-neon);
+            border-radius: 50%;
+            top: 30%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 8px var(--accent-neon);
+        }
+        .left-eye { left: 35%; }
+        /* Logo filter for theme */
+        [data-theme="dark"] .logo-img {
+            filter: invert(1) brightness(1.2);
+        }
+        [data-theme="light"] .logo-img {
+            filter: none;
+        }
+
 
         /* WhatsApp Button */
         .whatsapp-float {
@@ -368,37 +394,22 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Theme Toggle Logic
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const htmlElement = document.documentElement;
-
-        // Check local storage
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        htmlElement.setAttribute('data-theme', currentTheme);
-        updateIcon(currentTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcon(newTheme);
+        // Eye follow cursor
+        document.addEventListener('mousemove', function(e) {
+            const eyes = document.querySelectorAll('.eye');
+            eyes.forEach(function(eye) {
+                const rect = eye.getBoundingClientRect();
+                const eyeX = rect.left + rect.width / 2;
+                const eyeY = rect.top + rect.height / 2;
+                const dx = e.clientX - eyeX;
+                const dy = e.clientY - eyeY;
+                const angle = Math.atan2(dy, dx);
+                const radius = 8; // max movement radius
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                eye.style.transform = `translate(${x}px, ${y}px)`;
+            });
         });
-
-        function updateIcon(theme) {
-            if (theme === 'light') {
-                themeIcon.classList.remove('bi-moon-stars-fill');
-                themeIcon.classList.add('bi-sun-fill');
-                themeIcon.style.color = '#FDB813'; // Sun color
-                document.querySelectorAll('.nav-link, .navbar-brand').forEach(el => {
-                    el.style.color = 'var(--text-main)';
-                });
-            } else {
-                themeIcon.classList.remove('bi-sun-fill');
-                themeIcon.classList.add('bi-moon-stars-fill');
-                themeIcon.style.color = '#FFFFFF';
-            }
-        }
     </script>
     @yield('scripts')
 </body>
