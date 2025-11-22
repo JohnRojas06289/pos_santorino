@@ -481,7 +481,7 @@
 
 @section('content')
 <div class="product-detail">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <nav aria-label="breadcrumb" class="breadcrumb-custom">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>

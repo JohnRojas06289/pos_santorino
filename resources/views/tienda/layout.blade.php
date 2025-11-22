@@ -126,7 +126,7 @@
             padding: 0.6rem 2rem;
             font-weight: 700;
             text-transform: uppercase;
-            border-radius: 0; /* Bordes rectos estilo urbano */
+            border-radius: 0;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -201,23 +201,15 @@
             padding-left: 10px;
         }
 
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--text-muted);
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-            margin-right: 10px;
+        [data-theme="light"] .logo-img {
+            filter: none;
         }
 
         /* Logo interactivo */
         .logo-container {
             position: relative;
-            width: 250px;
-            height: 250px;
+            width: 550px;
+            height: 550px;
         }
         .logo-container .logo-img {
             width: 100%;
@@ -226,8 +218,8 @@
         }
         .eye {
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 60px;
+            height: 60px;
             background: var(--accent-neon);
             border-radius: 50%;
             top: 30%;
@@ -236,15 +228,6 @@
             transition: transform 0.1s ease;
             box-shadow: 0 0 8px var(--accent-neon);
         }
-        .left-eye { left: 35%; }
-        /* Logo filter for theme */
-        [data-theme="dark"] .logo-img {
-            filter: invert(1) brightness(1.2);
-        }
-        [data-theme="light"] .logo-img {
-            filter: none;
-        }
-
 
         /* WhatsApp Button */
         .whatsapp-float {
@@ -279,7 +262,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
+        <div class="container-fluid px-4 px-lg-5">
             <a class="navbar-brand" href="{{ url('/') }}">
                 BAJO<span style="color: var(--accent-neon);">CERO</span>
             </a>
@@ -306,7 +289,7 @@
                 
                 <div class="d-flex align-items-center gap-3">
                     <!-- Theme Toggle -->
-                    <button id="themeToggle" class="btn btn-link text-white p-0 fs-5" title="Cambiar Tema">
+                    <button id="themeToggle" class="btn btn-link p-0 fs-5" title="Cambiar Tema" style="color: var(--text-main);">
                         <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
                     </button>
 
@@ -314,7 +297,7 @@
                         <i class="bi bi-person-circle"></i>
                         <span class="d-none d-lg-inline">LOGIN</span>
                     </a>
-                    <a href="{{ route('carrito.index') }}" class="position-relative text-white fs-5">
+                    <a href="{{ route('carrito.index') }}" class="position-relative fs-5">
                         <i class="bi bi-bag" style="color: var(--text-main) !important;"></i>
                         @php
                             $carritoCount = 0;
@@ -340,7 +323,7 @@
 
     <!-- Footer -->
     <footer id="contacto">
-        <div class="container pb-5">
+        <div class="container-fluid px-4 px-lg-5 pb-5">
             <div class="row gy-5">
                 <div class="col-lg-4 col-md-6">
                     <h5 class="footer-title">BAJO CERO</h5>
@@ -348,7 +331,7 @@
                     <div class="mt-4">
                         <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
                         <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://www.tiktok.com/@chaquetas.bajo.ce?_r=1&_t=ZS-91b4qMLKj1c" class="social-icon" target="_blank"><i class="bi bi-tiktok"></i></a>
                     </div>
                 </div>
                 
@@ -408,6 +391,44 @@
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
                 eye.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Theme Toggle Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const htmlElement = document.documentElement;
+
+            // Check for saved theme preference or default to dark
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            
+            // Apply initial theme
+            if (currentTheme === 'light') {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            } else {
+                htmlElement.removeAttribute('data-theme');
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            }
+
+            // Toggle theme on click
+            themeToggleBtn.addEventListener('click', function() {
+                if (htmlElement.getAttribute('data-theme') === 'light') {
+                    // Switch to Dark
+                    htmlElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.remove('bi-sun-fill');
+                    themeIcon.classList.add('bi-moon-stars-fill');
+                } else {
+                    // Switch to Light
+                    htmlElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.remove('bi-moon-stars-fill');
+                    themeIcon.classList.add('bi-sun-fill');
+                }
             });
         });
     </script>

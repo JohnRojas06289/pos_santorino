@@ -120,7 +120,7 @@
 @section('content')
 <!-- Header -->
 <header class="about-header">
-    <div class="container position-relative z-2">
+    <div class="container-fluid px-4 px-lg-5 position-relative z-2">
         <h1 class="about-title">Nuestra Historia</h1>
         <p class="about-subtitle">
             Más que una marca, somos un movimiento. Nacidos en las calles, diseñados para destacar.
@@ -130,7 +130,7 @@
 
 <!-- Historia -->
 <section class="content-section">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="story-card">
@@ -163,7 +163,7 @@
 
 <!-- Valores -->
 <section class="content-section bg-darker" style="background: rgba(0,0,0,0.3);">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <div class="text-center mb-5">
             <h2 class="story-title" style="font-size: 2.5rem;">Nuestros Valores</h2>
         </div>

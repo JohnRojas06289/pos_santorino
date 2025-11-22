@@ -101,13 +101,13 @@
 
 @section('content')
 <header class="contact-header">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <h1 class="contact-title">Contáctanos</h1>
         <p class="text-muted fs-5">Estamos aquí para ayudarte. Escríbenos o visítanos.</p>
     </div>
 </header>
 
-<div class="container pb-5">
+<div class="container-fluid px-4 px-lg-5 pb-5">
     <div class="row g-5">
         <!-- Información de Contacto -->
         <div class="col-lg-5">

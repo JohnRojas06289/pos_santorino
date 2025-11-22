@@ -435,13 +435,13 @@
 
 <!-- Header -->
 <header class="page-header">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <h1 class="page-title">Nuestro Catálogo</h1>
         <p class="page-subtitle">Descubre las últimas tendencias en moda urbana</p>
     </div>
 </header>
 
-<div class="container pb-5">
+<div class="container-fluid px-4 px-lg-5 pb-5">
     <div class="row">
         <!-- Sidebar Filtros -->
         <aside class="col-lg-3 mb-5">
@@ -518,7 +518,7 @@
             @if($productos->count() > 0)
                 <div class="row g-4">
                     @foreach($productos as $producto)
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-6 col-lg-3">
                             <div class="product-card">
                                 <div class="badge-stock">
                                     @if($producto->stock_real > 0)

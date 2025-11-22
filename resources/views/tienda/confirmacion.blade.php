@@ -201,14 +201,14 @@
 
 @section('content')
 <div class="confirmation-header">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <i class="bi bi-check-circle-fill success-icon"></i>
         <h1 class="confirmation-title">¡Pedido Realizado Exitosamente!</h1>
         <p class="order-number">Número de Pedido: <strong>{{ $pedido->numero_pedido }}</strong></p>
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid px-4 px-lg-5">
     <div class="row">
         <div class="col-lg-8">
             <!-- Información del Pedido -->

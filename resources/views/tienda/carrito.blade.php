@@ -240,7 +240,7 @@
 
 @section('content')
 <div class="cart-header">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <h1 class="cart-title">
             <i class="bi bi-cart3"></i> Carrito de Compras
         </h1>
@@ -248,7 +248,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid px-4 px-lg-5">
     @if(session('success'))
         <div class="alert alert-success">
             <i class="bi bi-check-circle"></i> {{ session('success') }}

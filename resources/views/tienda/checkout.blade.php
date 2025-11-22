@@ -155,14 +155,14 @@
 
 @section('content')
 <div class="checkout-header">
-    <div class="container">
+    <div class="container-fluid px-4 px-lg-5">
         <h1 class="checkout-title">
             <i class="bi bi-credit-card"></i> Finalizar Compra
         </h1>
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid px-4 px-lg-5">
     @if(session('error'))
         <div class="alert alert-danger">
             <i class="bi bi-exclamation-triangle"></i> {{ session('error') }}
