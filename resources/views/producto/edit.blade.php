@@ -115,7 +115,7 @@
                             <!---Imagen Principal---->
                             <div class="col-12">
                                 <label for="img_path" class="form-label">Imagen Principal:</label>
-                                <input type="file" name="img_path" id="img_path" class="form-control" accept="image/*">
+                                <input type="file" name="img_path" id="img_path" class="form-control" accept=".avif,.webp,.jpeg,.jpg,.png">
                                 @error('img_path')
                                 <small class="text-danger">{{'*'.$message}}</small>
                                 @enderror
@@ -124,7 +124,7 @@
                             <!---Galería de Imágenes---->
                             <div class="col-12">
                                 <label for="images" class="form-label">Agregar más imágenes:</label>
-                                <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple>
+                                <input type="file" name="images[]" id="images" class="form-control" accept=".avif,.webp,.jpeg,.jpg,.png" multiple>
                                 @error('images.*')
                                 <small class="text-danger">{{'*'.$message}}</small>
                                 @enderror
@@ -263,6 +263,10 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        <hr>
+                        <p>Nuevas Imágenes:</p>
+                        <div id="gallery-preview" class="row g-2"></div>
                     </div>
 
                 </div>
@@ -310,6 +314,48 @@
             form.action = '/producto-multimedia/' + id;
             form.submit();
         }
+    }
+
+    // Preview para galería de imágenes nuevas
+    const inputGallery = document.getElementById('images');
+    const galleryPreview = document.getElementById('gallery-preview');
+
+    if (inputGallery && galleryPreview) {
+        inputGallery.addEventListener('change', function() {
+            // Limpiar previsualizaciones anteriores
+            galleryPreview.innerHTML = '';
+
+            if (this.files && this.files.length > 0) {
+                // Mostrar contador de imágenes
+                const counter = document.createElement('div');
+                counter.className = 'col-12 mb-2';
+                counter.innerHTML = `<small class="text-muted">${this.files.length} imagen(es) nueva(s) seleccionada(s)</small>`;
+                galleryPreview.appendChild(counter);
+
+                // Crear preview para cada imagen
+                Array.from(this.files).forEach((file, index) => {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col-4 col-md-3';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-thumbnail';
+                        img.style.width = '100%';
+                        img.style.height = '100px';
+                        img.style.objectFit = 'cover';
+                        img.alt = `Preview ${index + 1}`;
+                        
+                        col.appendChild(img);
+                        galleryPreview.appendChild(col);
+                    }
+
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
     }
 </script>
 @endpush

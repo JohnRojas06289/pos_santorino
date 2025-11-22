@@ -272,6 +272,210 @@
             height: 400px;
         }
     }
+
+    /* Custom Video Player */
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 600px;
+        background: #000;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .video-container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        opacity: 0;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+    }
+
+    .video-container:hover .video-play-button {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .video-play-button:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .video-play-button i {
+        font-size: 1.8rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .video-play-button:hover i {
+        color: #ffffff;
+    }
+
+    .video-play-button.playing {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .video-container:hover .video-play-button.playing {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Volume Control */
+    .video-volume-control {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 10px 15px;
+        border-radius: 25px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .video-container:hover .video-volume-control {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .video-volume-control i {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+    }
+
+    .volume-slider {
+        width: 100px;
+        height: 4px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.3);
+        outline: none;
+        border-radius: 2px;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .volume-slider::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        border-radius: 50%;
+        border: none;
+    }
+
+    /* Video Progress Bar */
+    .video-progress-control {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 10px 15px;
+        border-radius: 25px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .video-container:hover .video-progress-control {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .video-time-display {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.85rem;
+        font-weight: 500;
+        min-width: 90px;
+        text-align: center;
+        font-family: monospace;
+    }
+
+    .progress-slider {
+        flex: 1;
+        height: 4px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.3);
+        outline: none;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    .progress-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .progress-slider::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        border-radius: 50%;
+        border: none;
+    }
+
+    /* Adjust volume control position when progress bar is present */
+    .video-volume-control {
+        bottom: 70px;
+    }
+
+    @media (max-width: 768px) {
+        .video-container {
+            height: 400px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+        }
+    }
 </style>
 @endsection
 
@@ -291,7 +495,7 @@
             <div class="col-lg-6 mb-4">
                 <div class="product-gallery">
                     @if($producto->multimedia->count() > 0)
-                        <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div id="productCarousel" class="carousel slide">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/600x600?text=Sin+Imagen' }}" 
@@ -306,10 +510,36 @@
                                                  class="d-block w-100 main-image" 
                                                  alt="Imagen extra">
                                         @else
-                                            <video src="{{ asset($media->ruta) }}" 
-                                                   class="d-block w-100 main-image" 
-                                                   controls 
-                                                   style="background: #000;"></video>
+                                            <div class="video-container">
+                                                <video class="product-video" 
+                                                       data-video-id="{{ $media->id }}"
+                                                       style="background: #000;">
+                                                    <source src="{{ asset($media->ruta) }}" type="video/mp4">
+                                                </video>
+                                                <div class="video-play-button" data-video-id="{{ $media->id }}">
+                                                    <i class="bi bi-play-fill"></i>
+                                                </div>
+                                                <div class="video-volume-control">
+                                                    <i class="bi bi-volume-up-fill"></i>
+                                                    <input type="range" 
+                                                           class="volume-slider" 
+                                                           data-video-id="{{ $media->id }}"
+                                                           min="0" 
+                                                           max="100" 
+                                                           value="10">
+                                                </div>
+                                                <div class="video-progress-control">
+                                                    <span class="video-time-display" data-video-id="{{ $media->id }}">
+                                                        0:00 / 0:00
+                                                    </span>
+                                                    <input type="range" 
+                                                           class="progress-slider" 
+                                                           data-video-id="{{ $media->id }}"
+                                                           min="0" 
+                                                           max="100" 
+                                                           value="0">
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
                                 @endforeach
@@ -327,11 +557,17 @@
                         <div class="thumbnail-container">
                             <img src="{{ $producto->img_path ? asset($producto->img_path) : 'https://via.placeholder.com/100' }}" 
                                  class="thumbnail active" 
-                                 onclick="$('#productCarousel').carousel(0)">
+                                 data-slide-to="0">
                             @foreach($producto->multimedia as $index => $media)
-                                <img src="{{ $media->tipo == 'imagen' ? asset($media->ruta) : 'https://via.placeholder.com/100' }}" 
-                                     class="thumbnail" 
-                                     onclick="$('#productCarousel').carousel({{ $index + 1 }})">
+                                @if($media->tipo == 'imagen')
+                                    <img src="{{ asset($media->ruta) }}" 
+                                         class="thumbnail" 
+                                         data-slide-to="{{ $index + 1 }}">
+                                @else
+                                    <img src="https://via.placeholder.com/100/000000/66FCF1?text=VIDEO" 
+                                         class="thumbnail" 
+                                         data-slide-to="{{ $index + 1 }}">
+                                @endif
                             @endforeach
                         </div>
                     @else
@@ -444,6 +680,12 @@
     // Actualizar thumbnail activo
     document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
         thumb.addEventListener('click', function() {
+            const slideIndex = parseInt(this.getAttribute('data-slide-to'));
+            const carousel = bootstrap.Carousel.getInstance(document.querySelector('#productCarousel'));
+            if (carousel) {
+                carousel.to(slideIndex);
+            }
+            
             document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
             this.classList.add('active');
         });
@@ -457,7 +699,119 @@
             document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
                 thumb.classList.toggle('active', index === activeIndex);
             });
+            
+            // Pausar todos los videos cuando se cambia de slide
+            document.querySelectorAll('.product-video').forEach(video => {
+                video.pause();
+                const button = document.querySelector(`.video-play-button[data-video-id="${video.dataset.videoId}"]`);
+                if (button) {
+                    button.classList.remove('playing');
+                    button.querySelector('i').classList.remove('bi-pause-fill');
+                    button.querySelector('i').classList.add('bi-play-fill');
+                }
+            });
         });
     }
+
+    // Custom video player controls
+    document.querySelectorAll('.video-play-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const videoId = this.dataset.videoId;
+            const video = document.querySelector(`.product-video[data-video-id="${videoId}"]`);
+            const icon = this.querySelector('i');
+            
+            if (video.paused) {
+                // Set volume to 10% on first play
+                if (video.currentTime === 0) {
+                    video.volume = 0.1;
+                }
+                video.play();
+                icon.classList.remove('bi-play-fill');
+                icon.classList.add('bi-pause-fill');
+                this.classList.add('playing');
+            } else {
+                video.pause();
+                icon.classList.remove('bi-pause-fill');
+                icon.classList.add('bi-play-fill');
+                this.classList.remove('playing');
+            }
+        });
+    });
+
+    // Volume control
+    document.querySelectorAll('.volume-slider').forEach(slider => {
+        slider.addEventListener('input', function(e) {
+            const videoId = this.dataset.videoId;
+            const video = document.querySelector(`.product-video[data-video-id="${videoId}"]`);
+            if (video) {
+                video.volume = this.value / 100;
+            }
+        });
+    });
+
+    // Progress bar control
+    document.querySelectorAll('.progress-slider').forEach(slider => {
+        slider.addEventListener('input', function(e) {
+            const videoId = this.dataset.videoId;
+            const video = document.querySelector(`.product-video[data-video-id="${videoId}"]`);
+            if (video && video.duration) {
+                const time = (this.value / 100) * video.duration;
+                video.currentTime = time;
+            }
+        });
+    });
+
+    // Update progress bar and time display
+    document.querySelectorAll('.product-video').forEach(video => {
+        video.addEventListener('loadedmetadata', function() {
+            const videoId = this.dataset.videoId;
+            updateTimeDisplay(videoId, 0, this.duration);
+        });
+
+        video.addEventListener('timeupdate', function() {
+            const videoId = this.dataset.videoId;
+            const progressSlider = document.querySelector(`.progress-slider[data-video-id="${videoId}"]`);
+            
+            if (progressSlider && this.duration) {
+                const progress = (this.currentTime / this.duration) * 100;
+                progressSlider.value = progress;
+                updateTimeDisplay(videoId, this.currentTime, this.duration);
+            }
+        });
+    });
+
+    // Helper function to format time
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Helper function to update time display
+    function updateTimeDisplay(videoId, currentTime, duration) {
+        const timeDisplay = document.querySelector(`.video-time-display[data-video-id="${videoId}"]`);
+        if (timeDisplay) {
+            timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+        }
+    }
+
+    // Show play button when video ends
+    document.querySelectorAll('.product-video').forEach(video => {
+        video.addEventListener('ended', function() {
+            const button = document.querySelector(`.video-play-button[data-video-id="${this.dataset.videoId}"]`);
+            if (button) {
+                button.classList.remove('playing');
+                button.querySelector('i').classList.remove('bi-pause-fill');
+                button.querySelector('i').classList.add('bi-play-fill');
+            }
+            
+            // Auto-advance to next slide when video ends
+            const carousel = bootstrap.Carousel.getInstance(document.querySelector('#productCarousel'));
+            if (carousel) {
+                carousel.next();
+            }
+        });
+    });
 </script>
 @endsection

@@ -150,7 +150,7 @@
     }
 
     .product-card:hover .product-overlay {
-        opacity: 1;
+        opacity: 0;
     }
 
     .product-body {
@@ -233,6 +233,68 @@
         box-shadow: var(--glow);
     }
 
+    /* Botón Agregar en card */
+    .btn-add-cart {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 0.8rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 5;
+    }
+
+    .btn-add-cart:hover {
+        background: var(--accent-neon);
+        border-color: var(--accent-neon);
+        color: var(--bg-main);
+        box-shadow: var(--glow);
+    }
+
+    /* Ocultar botón agregar en hover de la card */
+    .product-card:hover .btn-add-cart {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Mostrar botón ver detalles en hover */
+    .product-card .btn-view-bottom {
+        opacity: 1;
+        pointer-events: auto;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 10;
+    }
+
+    .product-card:hover .btn-view-bottom {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Card clickeable */
+    .product-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+    }
+
+    .product-card-link:hover {
+        color: inherit;
+    }
+
+    /* Asegurar que los botones sean clickeables sobre el link */
+    .product-card form,
+    .product-card button,
+    .product-card .carousel-nav,
+    .product-card .carousel-dot {
+        position: relative;
+        z-index: 10;
+    }
+
     /* Empty State */
     .empty-state {
         text-align: center;
@@ -252,6 +314,120 @@
     input[type=range] {
         accent-color: var(--accent-neon);
     }
+
+    /* Carousel Styles */
+    .product-carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel-images {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .carousel-image.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Carousel Navigation Arrows */
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid var(--accent-neon);
+        color: var(--accent-neon);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 1 !important;
+        transition: all 0.3s ease;
+        z-index: 100 !important;
+        backdrop-filter: blur(5px);
+    }
+
+    .carousel-nav:hover {
+        background: var(--accent-neon);
+        color: var(--bg-main);
+        box-shadow: var(--glow);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-nav.prev {
+        left: 10px;
+    }
+
+    .carousel-nav.next {
+        right: 10px;
+    }
+
+    .carousel-nav i {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* Carousel Dots Indicators */
+    .carousel-dots {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover .carousel-dots {
+        opacity: 1;
+    }
+
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-dot:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.2);
+    }
+
+    .carousel-dot.active {
+        background: var(--accent-neon);
+        border-color: var(--accent-neon);
+        box-shadow: 0 0 8px var(--accent-neon);
+    }
+
+    /* Hide carousel controls if only one image */
+    .product-carousel[data-count="1"] .carousel-nav,
+    .product-carousel[data-count="1"] .carousel-dots {
+        display: none;
+    }
+
 </style>
 @endsection
 
@@ -354,50 +530,95 @@
                                 
                                 <div class="product-img-wrapper">
                                     @php
-                                        $imagenUrl = $producto->imagen;
-                                        if ($imagenUrl && !str_starts_with($imagenUrl, 'http')) {
-                                            // Si no empieza con http, asumimos que es local.
-                                            // Aseguramos que no tenga 'storage/' duplicado si ya viene en la BD
-                                            $imagenPath = str_replace('storage/', '', $imagenUrl);
-                                            $imagenUrl = asset('storage/' . $imagenPath);
+                                        // Recopilar todas las imágenes del producto
+                                        $imagenes = [];
+                                        
+                                        // Agregar imagen principal si existe
+                                        if ($producto->img_path) {
+                                            $imagenes[] = [
+                                                'url' => asset($producto->img_path),
+                                                'alt' => $producto->nombre
+                                            ];
                                         }
+                                        
+                                        // Agregar imágenes multimedia (solo imágenes, no videos)
+                                        if ($producto->multimedia) {
+                                            foreach ($producto->multimedia->where('tipo', 'imagen') as $media) {
+                                                $imagenes[] = [
+                                                    'url' => asset($media->ruta),
+                                                    'alt' => $producto->nombre . ' - Imagen adicional'
+                                                ];
+                                            }
+                                        }
+                                        
+                                        // Si no hay imágenes, usar placeholder
+                                        if (empty($imagenes)) {
+                                            $imagenes[] = [
+                                                'url' => 'https://via.placeholder.com/400x400/1F2833/66FCF1?text=BAJO+CERO',
+                                                'alt' => 'Sin imagen'
+                                            ];
+                                        }
+                                        
+                                        $totalImagenes = count($imagenes);
                                     @endphp
 
-                                    @if($producto->imagen)
-                                        <img src="{{ $imagenUrl }}" class="product-img" alt="{{ $producto->nombre }}" onerror="this.src='https://via.placeholder.com/400x400/1F2833/66FCF1?text=BAJO+CERO'">
-                                    @else
-                                        <img src="https://via.placeholder.com/400x400/1F2833/66FCF1?text=BAJO+CERO" class="product-img" alt="Sin imagen">
-                                    @endif
+                                    <a href="{{ route('tienda.show', $producto->id) }}">
+                                        <div class="product-carousel" data-count="{{ $totalImagenes }}" data-product-id="{{ $producto->id }}">
+                                            <div class="carousel-images">
+                                                @foreach($imagenes as $index => $imagen)
+                                                    <img src="{{ $imagen['url'] }}" 
+                                                         class="product-img carousel-image {{ $index === 0 ? 'active' : '' }}" 
+                                                         alt="{{ $imagen['alt'] }}" 
+                                                         onerror="this.src='https://via.placeholder.com/400x400/1F2833/66FCF1?text=BAJO+CERO'"
+                                                         data-index="{{ $index }}">
+                                                @endforeach
+                                            </div>
+
+                                            <!-- Dots Indicators -->
+                                            @if($totalImagenes > 1)
+                                                <div class="carousel-dots" data-product-id="{{ $producto->id }}">
+                                                    @for($i = 0; $i < $totalImagenes; $i++)
+                                                        <div class="carousel-dot {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}"></div>
+                                                    @endfor
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </a>
                                     
-                                    <div class="product-overlay">
-                                        <a href="{{ route('tienda.show', $producto->id) }}" class="btn btn-view">
+                                    <!-- Navigation Arrows OUTSIDE the link but INSIDE img-wrapper -->
+                                    @if($totalImagenes > 1)
+                                        <div class="carousel-nav prev" data-product-id="{{ $producto->id }}" onclick="event.stopPropagation();">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </div>
+                                        <div class="carousel-nav next" data-product-id="{{ $producto->id }}" onclick="event.stopPropagation();">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <a href="{{ route('tienda.show', $producto->id) }}" style="text-decoration: none; color: inherit;">
+                                    <div class="product-body">
+                                        <div class="product-brand">{{ $producto->marca->nombre ?? 'BAJO CERO' }}</div>
+                                        <h5 class="product-title">{{ $producto->nombre }}</h5>
+                                        <div class="product-price">
+                                            ${{ number_format($producto->precio, 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                @if($producto->stock_real > 0)
+                                    <div class="px-3 pb-3" style="margin-top: -1rem !important;">
+                                        <a href="{{ route('tienda.show', $producto->id) }}" class="btn btn-view btn-view-bottom w-100 rounded-0 text-uppercase fw-bold">
                                             VER DETALLES
                                         </a>
                                     </div>
-                                </div>
-
-                                <div class="product-body">
-                                    <div class="product-brand">{{ $producto->marca->nombre ?? 'BAJO CERO' }}</div>
-                                    <h5 class="product-title">{{ $producto->nombre }}</h5>
-                                    <div class="product-price">
-                                        ${{ number_format($producto->precio, 0, ',', '.') }}
-                                    </div>
-                                    
-                                    @if($producto->stock_real > 0)
-                                        <form action="{{ route('carrito.agregar') }}" method="POST" class="mt-3">
-                                            @csrf
-                                            <input type="hidden" name="producto_id" value="{{ $producto->id }}">
-                                            <input type="hidden" name="cantidad" value="1">
-                                            <button type="submit" class="btn btn-outline-light w-100 rounded-0 text-uppercase fw-bold" style="border-color: var(--border-color); color: var(--text-muted);">
-                                                <i class="bi bi-cart-plus me-2"></i>Agregar
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button class="btn btn-secondary w-100 mt-3 rounded-0 text-uppercase fw-bold" disabled>
+                                @else
+                                    <div class="px-3 pb-3" style="margin-top: -1rem !important;">
+                                        <button class="btn btn-secondary w-100 rounded-0 text-uppercase fw-bold" disabled>
                                             Agotado
                                         </button>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -492,7 +713,70 @@
                 card.style.transform = 'translateY(0)';
             }, index * 100);
         });
+
+        // Inicializar carruseles de imágenes
+        initializeCarousels();
     });
+
+    function initializeCarousels() {
+        const carousels = document.querySelectorAll('.product-carousel');
+        
+        carousels.forEach(carousel => {
+            const productId = carousel.dataset.productId;
+            const images = carousel.querySelectorAll('.carousel-image');
+            const dots = carousel.querySelectorAll('.carousel-dot');
+            const prevBtn = carousel.querySelector('.carousel-nav.prev');
+            const nextBtn = carousel.querySelector('.carousel-nav.next');
+            
+            let currentIndex = 0;
+            const totalImages = images.length;
+
+            // Solo configurar si hay más de una imagen
+            if (totalImages <= 1) return;
+
+            // Función para cambiar imagen
+            function goToImage(index) {
+                // Remover clase active de imagen y dot actual
+                images[currentIndex].classList.remove('active');
+                dots[currentIndex].classList.remove('active');
+                
+                // Actualizar índice
+                currentIndex = index;
+                if (currentIndex < 0) currentIndex = totalImages - 1;
+                if (currentIndex >= totalImages) currentIndex = 0;
+                
+                // Agregar clase active a nueva imagen y dot
+                images[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('active');
+            }
+
+            // Event listeners para flechas
+            if (prevBtn) {
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToImage(currentIndex - 1);
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToImage(currentIndex + 1);
+                });
+            }
+
+            // Event listeners para dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToImage(index);
+                });
+            });
+        });
+    }
 
     // Manejar modal de reserva
     const reserveModal = document.getElementById('reserveModal');

@@ -181,17 +181,20 @@
 
                     </div>
                     <div class="col-md-6">
-                        <p>Imagen del producto:</p>
+                        <p>Imagen Principal:</p>
 
                         <img id="img-default"
-                            class="img-fluid"
+                            class="img-fluid mb-3"
                             src="{{ asset('assets/img/paisaje.png') }}"
                             alt="Imagen por defecto">
 
                         <img src="" alt="Ha cargado un archivo no compatible"
                             id="img-preview"
-                            class="img-fluid img-thumbnail" style="display: none;">
+                            class="img-fluid img-thumbnail mb-3" style="display: none;">
 
+                        <hr>
+                        <p>Galería de Imágenes:</p>
+                        <div id="gallery-preview" class="row g-2"></div>
                     </div>
 
                 </div>
@@ -210,6 +213,7 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
 <script>
+    // Preview para imagen principal
     const inputImagen = document.getElementById('img_path');
     const imagenPreview = document.getElementById('img-preview');
     const imagenDefault = document.getElementById('img-default');
@@ -224,6 +228,46 @@
                 imagenDefault.style.display = 'none';
             }
             reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Preview para galería de imágenes
+    const inputGallery = document.getElementById('images');
+    const galleryPreview = document.getElementById('gallery-preview');
+
+    inputGallery.addEventListener('change', function() {
+        // Limpiar previsualizaciones anteriores
+        galleryPreview.innerHTML = '';
+
+        if (this.files && this.files.length > 0) {
+            // Mostrar contador de imágenes
+            const counter = document.createElement('div');
+            counter.className = 'col-12 mb-2';
+            counter.innerHTML = `<small class="text-muted">${this.files.length} imagen(es) seleccionada(s)</small>`;
+            galleryPreview.appendChild(counter);
+
+            // Crear preview para cada imagen
+            Array.from(this.files).forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 col-md-3';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'img-thumbnail';
+                    img.style.width = '100%';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.alt = `Preview ${index + 1}`;
+                    
+                    col.appendChild(img);
+                    galleryPreview.appendChild(col);
+                }
+
+                reader.readAsDataURL(file);
+            });
         }
     });
 </script>

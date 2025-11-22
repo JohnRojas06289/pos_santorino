@@ -11,7 +11,7 @@ class TiendaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Producto::with(['categoria', 'marca', 'presentacione', 'inventario', 'kardex' => function($q) {
+        $query = Producto::with(['categoria', 'marca', 'presentacione', 'inventario', 'multimedia', 'kardex' => function($q) {
             $q->latest('id')->limit(1);
         }])
             ->where('estado', 1); // Solo productos activos

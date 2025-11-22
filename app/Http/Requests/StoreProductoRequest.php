@@ -25,8 +25,30 @@ class StoreProductoRequest extends FormRequest
             'codigo' => 'nullable|unique:productos,codigo|max:50',
             'nombre' => 'required|unique:productos,nombre|max:255',
             'descripcion' => 'nullable|max:255',
-            'img_path' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'images.*' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'img_path' => [
+                'nullable',
+                'file',
+                'max:2048',
+                function ($attribute, $value, $fail) {
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    $allowed = ['avif', 'webp', 'jpeg', 'jpg', 'png'];
+                    if (!in_array($extension, $allowed)) {
+                        $fail('La imagen debe tener una de las siguientes extensiones: ' . implode(', ', $allowed));
+                    }
+                }
+            ],
+            'images.*' => [
+                'nullable',
+                'file',
+                'max:2048',
+                function ($attribute, $value, $fail) {
+                    $extension = strtolower($value->getClientOriginalExtension());
+                    $allowed = ['avif', 'webp', 'jpeg', 'jpg', 'png'];
+                    if (!in_array($extension, $allowed)) {
+                        $fail('La imagen debe tener una de las siguientes extensiones: ' . implode(', ', $allowed));
+                    }
+                }
+            ],
             'videos.*' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
             'marca_id' => 'nullable|integer|exists:marcas,id',
             'presentacione_id' => 'required|integer|exists:presentaciones,id',
