@@ -108,9 +108,9 @@ class ProductoController extends Controller
                 $query->orderBy('precio', $orderDir);
                 break;
             case 'stock':
-                $query->leftJoin('inventarios', 'productos.id', '=', 'inventarios.producto_id')
-                      ->select('productos.*', 'inventarios.stock')
-                      ->orderBy('inventarios.stock', $orderDir);
+                $query->leftJoin('inventario', 'productos.id', '=', 'inventario.producto_id')
+                      ->select('productos.*', 'inventario.cantidad as stock')
+                      ->orderBy('inventario.cantidad', $orderDir);
                 break;
             default:
                 $query->orderBy('created_at', $orderDir);
